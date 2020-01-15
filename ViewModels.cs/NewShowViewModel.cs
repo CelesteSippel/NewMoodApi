@@ -1,21 +1,12 @@
 using System;
 
-
-namespace NewMoodApi.Models
+namespace NewMoodApi.ViewModels
 {
-  public class Show
+  public class NewShow
   {
-
-    public int Id { get; set; }
     public string EventName { get; set; }
-
     public DateTime DateOfEvent { get; set; }
 
-
     public int VenueId { get; set; }
-
-    public Venue Venue { get; set; }
-
-
   }
 }

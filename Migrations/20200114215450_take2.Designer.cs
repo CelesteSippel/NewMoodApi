@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NewMoodApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200114160228_AddedTables")]
-    partial class AddedTables
+    [Migration("20200114215450_take2")]
+    partial class take2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,13 +71,30 @@ namespace NewMoodApi.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("DateOfEvent")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("EventName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("VenueId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VenueId");
+
+                    b.ToTable("Shows");
+                });
+
+            modelBuilder.Entity("NewMoodApi.Models.Venue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("City")
                         .HasColumnType("text");
 
                     b.Property<string>("State")
@@ -86,12 +103,27 @@ namespace NewMoodApi.Migrations
                     b.Property<string>("StreetAddress")
                         .HasColumnType("text");
 
+                    b.Property<string>("VenueName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VenueUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("Zip")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shows");
+                    b.ToTable("Venue");
+                });
+
+            modelBuilder.Entity("NewMoodApi.Models.Show", b =>
+                {
+                    b.HasOne("NewMoodApi.Models.Venue", "Venue")
+                        .WithMany("Shows")
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -12,48 +12,48 @@ namespace NewMoodApi.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class ShowController : ControllerBase
+  public class VenueController : ControllerBase
   {
     private readonly DatabaseContext _context;
 
-    public ShowController(DatabaseContext context)
+    public VenueController(DatabaseContext context)
     {
       _context = context;
     }
 
-    // GET: api/Show
+    // GET: api/Venue
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Show>>> GetShows()
+    public async Task<ActionResult<IEnumerable<Venue>>> GetVenue()
     {
-      return await _context.Shows.Include(i => i.Venue).ToListAsync();
+      return await _context.Venue.ToListAsync();
     }
 
-    // GET: api/Show/5
+    // GET: api/Venue/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Show>> GetShow(int id)
+    public async Task<ActionResult<Venue>> GetVenue(int id)
     {
-      var show = await _context.Shows.FindAsync(id);
+      var venue = await _context.Venue.FindAsync(id);
 
-      if (show == null)
+      if (venue == null)
       {
         return NotFound();
       }
 
-      return show;
+      return venue;
     }
 
-    // PUT: api/Show/5
+    // PUT: api/Venue/5
     // To protect from overposting attacks, please enable the specific properties you want to bind to, for
     // more details see https://aka.ms/RazorPagesCRUD.
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutShow(int id, Show show)
+    public async Task<IActionResult> PutVenue(int id, Venue venue)
     {
-      if (id != show.Id)
+      if (id != venue.Id)
       {
         return BadRequest();
       }
 
-      _context.Entry(show).State = EntityState.Modified;
+      _context.Entry(venue).State = EntityState.Modified;
 
       try
       {
@@ -61,7 +61,7 @@ namespace NewMoodApi.Controllers
       }
       catch (DbUpdateConcurrencyException)
       {
-        if (!ShowExists(id))
+        if (!VenueExists(id))
         {
           return NotFound();
         }
@@ -74,37 +74,37 @@ namespace NewMoodApi.Controllers
       return NoContent();
     }
 
-    // POST: api/Show
+    // POST: api/Venue
     // To protect from overposting attacks, please enable the specific properties you want to bind to, for
     // more details see https://aka.ms/RazorPagesCRUD.
     [HttpPost]
-    public async Task<ActionResult<Show>> PostShow(Show show)
+    public async Task<ActionResult<Venue>> PostVenue(Venue venue)
     {
-      _context.Shows.Add(show);
+      _context.Venue.Add(venue);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetShow", new { id = show.Id }, show);
+      return CreatedAtAction("GetVenue", new { id = venue.Id }, venue);
     }
 
-    // DELETE: api/Show/5
+    // DELETE: api/Venue/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Show>> DeleteShow(int id)
+    public async Task<ActionResult<Venue>> DeleteVenue(int id)
     {
-      var show = await _context.Shows.FindAsync(id);
-      if (show == null)
+      var venue = await _context.Venue.FindAsync(id);
+      if (venue == null)
       {
         return NotFound();
       }
 
-      _context.Shows.Remove(show);
+      _context.Venue.Remove(venue);
       await _context.SaveChangesAsync();
 
-      return show;
+      return venue;
     }
 
-    private bool ShowExists(int id)
+    private bool VenueExists(int id)
     {
-      return _context.Shows.Any(e => e.Id == id);
+      return _context.Venue.Any(e => e.Id == id);
     }
   }
 }

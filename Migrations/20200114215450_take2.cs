@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace NewMoodApi.Migrations
 {
-    public partial class AddedTables : Migration
+    public partial class take2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,13 +39,13 @@ namespace NewMoodApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shows",
+                name: "Venue",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EventName = table.Column<string>(nullable: true),
-                    DateOfEvent = table.Column<DateTime>(nullable: false),
+                    VenueName = table.Column<string>(nullable: true),
+                    VenueUrl = table.Column<string>(nullable: true),
                     StreetAddress = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
@@ -53,8 +53,34 @@ namespace NewMoodApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shows", x => x.Id);
+                    table.PrimaryKey("PK_Venue", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Shows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventName = table.Column<string>(nullable: true),
+                    DateOfEvent = table.Column<DateTime>(nullable: false),
+                    VenueId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shows_Venue_VenueId",
+                        column: x => x.VenueId,
+                        principalTable: "Venue",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shows_VenueId",
+                table: "Shows",
+                column: "VenueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -67,6 +93,9 @@ namespace NewMoodApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Shows");
+
+            migrationBuilder.DropTable(
+                name: "Venue");
         }
     }
 }
