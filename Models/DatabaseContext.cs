@@ -11,7 +11,7 @@ namespace NewMoodApi.Models
     public DbSet<Show> Shows { get; set; }
     public DbSet<EmailList> EmailLists { get; set; }
     public DbSet<Booking> Bookings { get; set; }
-    public DbSet<Venue> Venue { get; set; }
+    public DbSet<Venue> Venues { get; set; }
 
     private string ConvertPostConnectionToConnectionString(string connection)
     {

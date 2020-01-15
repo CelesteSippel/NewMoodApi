@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewMoodApi.Models;
@@ -21,14 +19,27 @@ namespace NewMoodApi.Controllers
       _context = context;
     }
 
-    // GET: api/Show
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Show>>> GetShows()
     {
-      return await _context.Shows.Include(i => i.Venue).ToListAsync();
+      var db = new DatabaseContext();
+      var results = db.Shows.Include(i => i.Venue);
+      var rv = results.Select(show => new ShowItem
+      {
+        Id = show.Id,
+        EventName = show.EventName,
+        DateOfEvent = show.DateOfEvent,
+        VenueName = show.Venue.VenueName,
+        VenueUrl = show.Venue.VenueUrl
+      });
+
+      return Ok(rv);
     }
 
-    // GET: api/Show/5
+
+
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Show>> GetShow(int id)
     {
@@ -74,32 +85,38 @@ namespace NewMoodApi.Controllers
       return NoContent();
     }
 
-    // POST: api/Show
-    // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-    // more details see https://aka.ms/RazorPagesCRUD.
+
     [HttpPost]
-    public async Task<ActionResult<Show>> PostShow(Show show)
+    public async Task<ActionResult<Show>> CreatedShow(NewShow vm)
     {
-      _context.Shows.Add(show);
-      await _context.SaveChangesAsync();
-
-      return CreatedAtAction("GetShow", new { id = show.Id }, show);
-    }
-
-    // DELETE: api/Show/5
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<Show>> DeleteShow(int id)
-    {
-      var show = await _context.Shows.FindAsync(id);
-      if (show == null)
+      var db = new DatabaseContext();
+      var venue = db.Venues
+        .FirstOrDefault(venue => venue.Id == vm.VenueId);
+      if (venue == null)
       {
         return NotFound();
       }
+      else
+      {
+        var show = new Show
+        {
+          EventName = vm.EventName,
+          DateOfEvent = vm.DateOfEvent,
+          VenueId = vm.VenueId
 
-      _context.Shows.Remove(show);
-      await _context.SaveChangesAsync();
+        };
+        db.Shows.Add(show);
+        db.SaveChanges();
+        var rv = new CreatedShow
+        {
+          Id = show.Id,
+          EventName = show.EventName,
+          DateOfEvent = show.DateOfEvent,
+          VenueId = show.VenueId
 
-      return show;
+        };
+        return Ok(rv);
+      }
     }
 
     private bool ShowExists(int id)

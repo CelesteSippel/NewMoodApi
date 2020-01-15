@@ -25,14 +25,14 @@ namespace NewMoodApi.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Venue>>> GetVenue()
     {
-      return await _context.Venue.ToListAsync();
+      return await _context.Venues.ToListAsync();
     }
 
     // GET: api/Venue/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Venue>> GetVenue(int id)
     {
-      var venue = await _context.Venue.FindAsync(id);
+      var venue = await _context.Venues.FindAsync(id);
 
       if (venue == null)
       {
@@ -80,7 +80,7 @@ namespace NewMoodApi.Controllers
     [HttpPost]
     public async Task<ActionResult<Venue>> PostVenue(Venue venue)
     {
-      _context.Venue.Add(venue);
+      _context.Venues.Add(venue);
       await _context.SaveChangesAsync();
 
       return CreatedAtAction("GetVenue", new { id = venue.Id }, venue);
@@ -90,13 +90,13 @@ namespace NewMoodApi.Controllers
     [HttpDelete("{id}")]
     public async Task<ActionResult<Venue>> DeleteVenue(int id)
     {
-      var venue = await _context.Venue.FindAsync(id);
+      var venue = await _context.Venues.FindAsync(id);
       if (venue == null)
       {
         return NotFound();
       }
 
-      _context.Venue.Remove(venue);
+      _context.Venues.Remove(venue);
       await _context.SaveChangesAsync();
 
       return venue;
@@ -104,7 +104,7 @@ namespace NewMoodApi.Controllers
 
     private bool VenueExists(int id)
     {
-      return _context.Venue.Any(e => e.Id == id);
+      return _context.Venues.Any(e => e.Id == id);
     }
   }
 }
