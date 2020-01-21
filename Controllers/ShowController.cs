@@ -119,6 +119,21 @@ namespace NewMoodApi.Controllers
       }
     }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Show>> DeleteShow(int id)
+    {
+      var show = await _context.Shows.FindAsync(id);
+      if (show == null)
+      {
+        return NotFound();
+      }
+
+      _context.Shows.Remove(show);
+      await _context.SaveChangesAsync();
+
+      return show;
+    }
+
     private bool ShowExists(int id)
     {
       return _context.Shows.Any(e => e.Id == id);
