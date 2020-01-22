@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Auth.Services;
+using NewMoodApi.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace NewMoodApi.Controllers

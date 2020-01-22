@@ -9,7 +9,7 @@ using NewMoodApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace AuthExample.Controllers
+namespace NewMoodApi.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
