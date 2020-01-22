@@ -13,6 +13,9 @@ namespace NewMoodApi.Models
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Venue> Venues { get; set; }
 
+    public DbSet<User> Users { get; set; }
+
+
     private string ConvertPostConnectionToConnectionString(string connection)
     {
       var _connection = connection.Replace("postgres://", String.Empty);
