@@ -1,7 +1,7 @@
-docker build -t sdg-sample-api-template .
+docker build -t new-mood-api-image .
 
-docker tag sdg-sample-api-template registry.heroku.com/sdg-sample-api-template/web
+docker tag new-mood-api-image registry.heroku.com/new-mood-api/web
 
-docker push registry.heroku.com/sdg-sample-api-template/web
+docker push registry.heroku.com/new-mood-api/web
 
-heroku container:release web -a sdg-sample-api-template
+heroku container:release web -a new-mood-api
