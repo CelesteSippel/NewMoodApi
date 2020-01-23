@@ -1,6 +1,6 @@
 using System;
 
-// This sucks.
+
 namespace NewMoodApi.ViewModels
 {
   public class AuthenticatedData
