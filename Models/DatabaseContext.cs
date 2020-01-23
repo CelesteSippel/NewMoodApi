@@ -2,6 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace NewMoodApi.Models
 {
@@ -15,7 +16,10 @@ namespace NewMoodApi.Models
 
     public DbSet<User> Users { get; set; }
 
-
+    public DatabaseContext(IConfiguration configuration)
+    {
+      this.ConnectionString = configuration["ConnectionString"];
+    }
     private string ConvertPostConnectionToConnectionString(string connection)
     {
       var _connection = connection.Replace("postgres://", String.Empty);
